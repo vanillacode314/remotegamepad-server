@@ -1,0 +1,33 @@
+name: Package
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: PyInstaller Windows
+        uses: JackMcKew/pyinstaller-action-windows@main
+        with:
+          path: src
+
+      - name: Package Application
+        uses: JackMcKew/pyinstaller-action-linux@main
+        with:
+          path: src
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: remotegamepad-server
+          path: src/dist/linux # or path/to/artifact
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: remotegamepad-server.exe
+          path: src/dist/windows # or path/to/artifact
